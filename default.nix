@@ -1,5 +1,5 @@
-{ rev      ? "49bdae006e66e70ad3245a463edc01b5749250d3"
-, sha256   ? "1ijsifmap47nfzg0spny94lmj66y3x3x8i6vs471bnjamka3dx8p"
+{ rev      ? "620124b130c9e678b9fe9dd4a98750968b1f749a"
+, sha256   ? "0xgy2rn2pxii3axa0d9y4s25lsq7d9ykq30gvg2nzgmdkmy375rr"
 , pkgs     ? import (builtins.fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/${rev}.tar.gz";
     inherit sha256; }) {
@@ -48,7 +48,11 @@ in pkgs.stdenv.mkDerivation rec {
     then null
     else filterSource ./.;
 
-  buildInputs = [ pkgs.emacsPackagesNg.org texFull ];
+  buildInputs = [
+    texFull
+    pkgs.emacsPackagesNg.org
+    pkgs.haskellPackages.hpack
+  ];
   enableParallelBuilding = true;
 
   buildPhase = "make";

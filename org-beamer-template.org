@@ -1,7 +1,7 @@
-#+TITLE:     Sample Beamer presentation
 #+AUTHOR:    John Wiegley
-#+EMAIL:     johnw@newartisans.com
 #+DATE:      2018-01-27
+#+EMAIL:     johnw@newartisans.com
+#+TITLE:     Sample Beamer presentation
 
 #+DESCRIPTION:
 #+KEYWORDS:
@@ -155,7 +155,7 @@ digraph {
 #+LaTeX_CLASS_OPTIONS: [show notes, t]
 
 #+LATEX_HEADER_EXTRA: \usepackage{fontspec}
-#+LATEX_HEADER_EXTRA: \setmainfont{Tahoma}
+#+LATEX_HEADER_EXTRA: \setmainfont{Liberation Sans}
 #+LATEX_HEADER_EXTRA: \usepackage{svg}
 #+LATEX_HEADER_EXTRA: \usepackage{export}
 #+LATEX_HEADER_EXTRA: \usepackage{pdfcomment}

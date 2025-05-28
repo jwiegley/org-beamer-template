@@ -20,11 +20,19 @@
 (require 'ox-latex)
 (require 'ox-beamer)
 (require 'ob-diagrams)
-(require 'haskell-mode)
-(require 'haskell-customize)
 
-(setq org-plantuml-jar-path "/run/current-system/sw/lib/plantuml.jar")
-(setq org-ditaa-jar-path "/run/current-system/sw/lib/ditaa.jar")
+(setq org-plantuml-jar-path
+      (expand-file-name "lib/plantuml.jar"
+                        (concat
+                         (file-name-directory
+                          (executable-find "plantuml"))
+                         "/..")))
+(setq org-ditaa-jar-path
+      (expand-file-name "lib/ditaa.jar"
+                        (concat
+                         (file-name-directory
+                          (executable-find "ditaa"))
+                         "/..")))
 (setq org-diagrams-executable "diagrams-builder-svg")
 
 (org-babel-do-load-languages
@@ -33,15 +41,16 @@
    (emacs-lisp . t)
    (haskell    . t)
    (calc       . t)
-   (coq        . t)
-   (ledger     . t)
+   ;; (coq        . t)
+   ;; (ledger     . t)
    (ditaa      . t)
    (plantuml   . t)
    (diagrams   . t)
-   (sh         . t)
+   ;; (sh         . t)
    (sql        . t)
    (dot        . t)
-   (restclient . t)))
+   ;; (restclient . t)
+   ))
 
 (setq org-beamer-frame-default-options "fragile")
 

@@ -1,5 +1,5 @@
 NAME    = org-beamer-template
-PYTHON	= /usr/bin/python
+PYTHON	= python
 PRESENT	= /Applications/Misc/Présentation.app/Contents/MacOS/presentation.py
 PDF	= $(NAME).pdf
 EMACS   = emacs
@@ -12,14 +12,8 @@ open: $(PDF)
 present: all
 	$(PYTHON) $(PRESENT) $(PDF)
 
-org-support-code.cabal: package.yaml
-	hpack
-
-dist/build/org-support-code/org-support-code: Main.hs org-support-code.cabal
-	cabal build
-
 # Ensure all examples work before building the slide deck
-%.tex: %.org Makefile dist/build/org-support-code/org-support-code
+%.tex: %.org Makefile
 	$(EMACS) --debug-init -batch -L . -l support -f perform-extraction $<
 
 %.pdf: %.tex
@@ -31,7 +25,7 @@ clean:
 	rm -fr html
 	rm -f *.tex *.pdf *.vrb *.aux *.log *.nav *.out *.snm *.toc *.upa
 	rm -f src/*.d src/*.vo src/*.glob
-	rm -fr _minted-* auto diagram*.svg svg-inkscape *.cabal dist
+	rm -fr _minted-* auto diagram*.svg svg-inkscape
 
 watch:
 	fswatch --batch-marker --latency 2 -m poll_monitor \

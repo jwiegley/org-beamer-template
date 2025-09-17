@@ -1,0 +1,25 @@
+\mode<presentation>
+
+% Frame title
+\defbeamertemplate*{frametitle}{texsx}[1][]
+{
+  \vskip1cm%
+  \begin{beamercolorbox}[wd=\paperwidth]{frametitle}
+  \begin{tikzpicture}[scale=\paperwidth/10in]
+  \useasboundingbox[fill=white](0,0) rectangle(10in,1in);
+   \ifx\insertframesubtitle\@empty%
+      {\fill[hero] (0,0.600in) rectangle(0.25in,0.850in);
+       \fill[white] (0.5in,0in) rectangle(10in,1in)
+         node[black,font=\Large,anchor=north,text width=9.5in]
+           {\insertframetitle};}
+      \else%
+      {\fill[hero] (0,0.215in) rectangle(0.25in,0.715in);
+       \fill[white] (0.5in,0in) rectangle(10in,1in)
+         node[black,font=\Large,anchor=north,align=left,text width=9.5in]
+           {\insertframetitle\\\insertframesubtitle};}
+      \fi
+  \end{tikzpicture}
+  \end{beamercolorbox}
+}
+
+\mode<all>

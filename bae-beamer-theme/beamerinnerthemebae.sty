@@ -1,0 +1,78 @@
+\mode<presentation>
+
+\setbeamertemplate{background}{
+  \begin{tikzpicture}[scale=\paperwidth/10in]
+    \ifnum\thepage=1\relax%
+      \ifdefempty{\backgroundimage}{}{
+        \begin{scope}
+          \clip (0,1in) rectangle (10in,7in);
+          \node[inner sep=0pt] (background) at (5in,3.5in)
+            {\includegraphics[width=\paperwidth,keepaspectratio]{\backgroundimage}};
+        \end{scope}}
+    \fi
+
+    \fill[white] (9in,7in) rectangle(10in,7.5in)
+      node[black,font=\tiny,pos=.5] {\textbf{\thepage}};
+
+    \fill[white] (0,0)     rectangle(2.5in,1in)
+      node[black,font=\tiny,pos=.4] {\copyright\ \the\year\ BAE Systems};
+    \ifdefempty{\exportcontrol}{}{
+      \fill[white] (2.5in,0) rectangle(8in,1in)
+        node[black,font=\tiny,pos=.4] {EXPORT CONTROL MARKINGS};
+    }
+    \fill[white] (8in,0)   rectangle(10in,1in)
+      node[black,font=\tiny,pos=.4] 
+        {\includegraphics[width=1in]{bae-logo.pdf}};
+  \end{tikzpicture}
+}
+
+% Title page
+\defbeamertemplate*{title page}{bae}[1][]
+{
+  \begin{beamercolorbox}[wd=\paperwidth,#1]{frametitle}
+  \begin{tikzpicture}[scale=\paperwidth/10in]
+    \useasboundingbox[fill=white,opacity=0](0,0) rectangle(10in,1in);
+    \ifx\insertsubtitle\@empty%
+      {\fill[hero] (0,0.600in) rectangle(0.25in,0.850in);
+       \draw[draw=none] (0.5in,0in) rectangle(10in,1in)
+         \ifdefempty{\backgroundimage}{
+           node[black,font=\Large,anchor=north,text width=9.5in]
+             {\inserttitle};
+         }{
+           node[white,font=\Large,anchor=north,text width=9.5in]
+             {\inserttitle};
+         }}
+      \else%
+      {\fill[hero] (0,0.215in) rectangle(0.25in,0.715in);
+       \draw[draw=none] (0.5in,0in) rectangle(10in,1in)
+         \ifdefempty{\backgroundimage}{
+           node[black,font=\Large,anchor=north,align=left,text width=9.5in]
+             {\inserttitle\\\insertsubtitle};
+         }{
+           node[white,font=\Large,anchor=north,align=left,text width=9.5in]
+             {\inserttitle\\\insertsubtitle};
+         }}
+      \fi
+  \end{tikzpicture}
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[wd=\paperwidth,#1]{author}
+  \begin{tikzpicture}[scale=\paperwidth/10in]
+    \useasboundingbox[fill=white,opacity=0](0,0) rectangle(10in,2in);
+    \draw[draw=none] (0.5in,0in) rectangle(10in,2in)
+      \ifdefempty{\backgroundimage}{
+        node[black,font=\large,anchor=north,text width=9.5in]
+          {\usebeamerfont{author}\insertauthor\\
+           \usebeamerfont{author}\insertdate};
+      }{
+        node[white,font=\large,anchor=north,text width=9.5in]
+          {\usebeamerfont{author}\insertauthor\\
+           \usebeamerfont{author}\insertdate};
+      }
+  \end{tikzpicture}
+  \end{beamercolorbox}
+}
+
+% Items
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{sections/subsections in toc}[circle]

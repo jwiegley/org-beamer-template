@@ -1,7 +1,7 @@
+(setq org-latex-compiler "xelatex")
+
 (setq org-latex-default-packages-alist
-      '(;; ("T1" "fontenc" t)
-        ("" "fontspec" nil)
-        ("" "xunicode" nil)
+      '(("" "fontspec" t ("xelatex" "lualatex"))
         ("" "graphicx" t)
         ("" "longtable" nil)
         ("" "float" nil)
@@ -9,9 +9,6 @@
         ("" "rotating" nil)
         ("normalem" "ulem" t)
         ("" "amsmath" t)
-        ("" "textcomp" t)
-        ("" "marvosym" t)
-        ("" "wasysym" t)
         ("" "amssymb" t)
         ("" "hyperref" nil)
         "\\tolerance=1000"))
@@ -41,18 +38,22 @@
    (emacs-lisp . t)
    (haskell    . t)
    (calc       . t)
-   ;; (coq        . t)
-   ;; (ledger     . t)
    (ditaa      . t)
    (plantuml   . t)
    (diagrams   . t)
-   ;; (sh         . t)
    (sql        . t)
-   (dot        . t)
-   ;; (restclient . t)
-   ))
+   (dot        . t)))
 
 (setq org-beamer-frame-default-options "fragile")
+
+;; Convert @text@ to \alert{text} for Beamer highlighting
+(defun my/beamer-alert-filter (text backend info)
+  "Convert @text@ to \\alert{text} in Beamer export."
+  (when (org-export-derived-backend-p backend 'beamer)
+    (replace-regexp-in-string "@\\([^@]+\\)@" "\\\\alert{\\1}" text)))
+
+(add-to-list 'org-export-filter-plain-text-functions
+             #'my/beamer-alert-filter)
 
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-babel-evaluate t)
@@ -60,14 +61,11 @@
 (setq org-latex-listings 'minted)
 
 (setq org-latex-minted-options
-      '(("fontfamily" "courier")
-        ("fontsize" "\\footnotesize")
+      '(("fontsize" "\\footnotesize")
         ("linenos" "true")
-        ("xleftmargin" "2em")))
+        ("xleftmargin" "2em")
+        ("breaklines" "true")))
 
-(setq org-export-latex-minted-options
-      '(("fontsize" "\\small")
-        ("linenos" "true")))
 
 (setq org-latex-pdf-process
       '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"

@@ -17,9 +17,10 @@ present: all
 	$(EMACS) --debug-init -batch -L . -l support -f perform-extraction $<
 
 %.pdf: %.tex
+	xelatex -shell-escape -interaction nonstopmode $< || true
+	xelatex -shell-escape -interaction nonstopmode $< || true
 	xelatex -shell-escape -interaction nonstopmode $<
-	xelatex -shell-escape -interaction nonstopmode $<
-	xelatex -shell-escape -interaction nonstopmode $<
+	@test -f $@ && echo "PDF generated successfully"
 
 clean:
 	rm -fr html

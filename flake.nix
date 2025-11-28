@@ -1,5 +1,5 @@
 {
-   description = "org-beamer template";
+  description = "org-beamer template";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -21,9 +21,14 @@
             || pkg.pname == "latex2e-help-texinfo";
       };
 
+      # Emacs with packages - use nix packages instead of ELPA to avoid download issues
+      myEmacs = pkgs.emacs30.pkgs.withPackages (epkgs: with epkgs; [
+        ob-diagrams
+      ]);
+
       ignoredDirs = [
         "html" ".diagrams_cache" "_minted-org-beamer-template"
-        "auto" "dist" "svg-inkscape"
+        "auto" "dist" "svg-inkscape" "_minted"
       ];
 
       ignoredSuffixes = [
@@ -47,12 +52,17 @@
         texFull
         plantuml
         ditaa
+        graphviz  # for dot diagrams
         liberation_ttf
-        (emacs.pkgs.withPackages(epkgs: with epkgs; [
-          org
-          ob-diagrams
-        ]))
+        inkscape  # for SVG to PDF conversion
+        myEmacs
+        jdk       # Java for plantuml and ditaa
       ];
+
+      # Fontconfig configuration to find Liberation fonts
+      fontsConf = pkgs.makeFontsConf {
+        fontDirectories = [ pkgs.liberation_ttf ];
+      };
     in rec {
       packages.presentation = with pkgs; stdenv.mkDerivation rec {
         name = "org-beamer-template";
@@ -64,11 +74,18 @@
           else filterSource ./.;
 
         inherit buildInputs;
+        nativeBuildInputs = [ pkgs.makeWrapper ];
         enableParallelBuilding = true;
 
         buildPhase = ''
+          export FONTCONFIG_FILE=${fontsConf}
           export OSFONTDIR=${pkgs.liberation_ttf}/share/fonts
-          make
+          export HOME=$(mktemp -d)
+          export XDG_CACHE_HOME=$HOME/.cache
+          export XDG_CONFIG_HOME=$HOME/.config
+          export XDG_DATA_HOME=$HOME/.local/share
+          mkdir -p $HOME/.cache $HOME/.config $HOME/.local/share
+          make EMACS=${myEmacs}/bin/emacs
         '';
         installPhase = ''
           mkdir -p $out/share/pdf
@@ -81,6 +98,17 @@
         };
       };
 
-      defaultPackage = packages.presentation;
+      packages.default = packages.presentation;
+
+      # Development shell for interactive work
+      devShells.default = pkgs.mkShell {
+        inherit buildInputs;
+        shellHook = ''
+          export FONTCONFIG_FILE=${fontsConf}
+          export OSFONTDIR=${pkgs.liberation_ttf}/share/fonts
+          echo "org-beamer-template development environment"
+          echo "Run 'make' to build the presentation"
+        '';
+      };
     });
 }

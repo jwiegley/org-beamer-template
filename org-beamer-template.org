@@ -63,7 +63,7 @@ with its own headline, is displayed in a block:
 
 ** Diagram!
 #+name: graph-info-figure
-#+begin_src plantuml :file diagram1.svg :java -Djava.awt.headless=true :results file
+#+begin_src plantuml :file diagram1.svg :java -Djava.awt.headless=true :results file :exports results
   Alice -> Bob: sync call
   Alice ->> Bob: async call
 #+end_src
@@ -73,7 +73,7 @@ with its own headline, is displayed in a block:
 [[file:diagram1.svg]]
 ** Another!
 #+name: ditaa-figure
-#+begin_src ditaa :file diagram2.svg :java -Djava.awt.headless=true :cmdline -T --svg :results file
+#+begin_src ditaa :file diagram2.svg :java -Djava.awt.headless=true :cmdline -T --svg :results file :exports results
 +-----------+              +----------+
 |   Foo     |              |   Bar    |
 +------+----+              +------+---+
@@ -112,7 +112,7 @@ with its own headline, is displayed in a block:
   #+end_export
 ** Can it be?!
 #+name: dot-figure
-#+begin_src dot :file diagram4.svg :cmdline -Tsvg :results file
+#+begin_src dot :file diagram4.svg :cmdline -Tsvg :results file :exports results
 digraph {
     bgcolor=transparent;
     rankdir=LR;
@@ -154,8 +154,9 @@ digraph {
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [show notes, t]
 
-#+LATEX_HEADER_EXTRA: \usepackage{fontspec}
 #+LATEX_HEADER_EXTRA: \setmainfont{Liberation Sans}
+#+LATEX_HEADER_EXTRA: \setsansfont{Liberation Sans}
+#+LATEX_HEADER_EXTRA: \setmonofont{Liberation Mono}
 #+LATEX_HEADER_EXTRA: \usepackage{svg}
 #+LATEX_HEADER_EXTRA: \usepackage{export}
 #+LATEX_HEADER_EXTRA: \usepackage{pdfcomment}
